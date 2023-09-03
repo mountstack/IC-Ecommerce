@@ -67,9 +67,29 @@ async function login(req, res, next) {
     })
 } 
 
-async function makeAdmin(req, res) {
+async function makeAdmin(req, res, next) { 
+    const { userId } = req.body; 
 
-}
+    const user = await User.findById(userId); 
+    if(!user) { 
+        return next(ErrorHandler.notFound('User not found')); 
+    } 
+
+    if(user.role === 'admin') { 
+        return next(ErrorHandler.conflict('User is already an admin')); 
+    } 
+
+    try { 
+        await User.findByIdAndUpdate({_id: userId}, {$set: { role: 'admin' }}); 
+
+        res.json({ 
+            'message': 'User successfully promoted to admin' 
+        }); 
+    } 
+    catch (error) { 
+        next(ErrorHandler.serverError()); 
+    } 
+} 
 
 
 module.exports = {

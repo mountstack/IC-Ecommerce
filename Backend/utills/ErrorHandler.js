@@ -13,12 +13,16 @@ class ErrorHandler {
         return new ErrorHandler(401, message); 
     } 
 
-    static pageNotFound(message = 'NOT Found!') { 
-        return new ErrorHandler(404, message); 
+    static paymentRequired(message = 'Payment Required!') { 
+        return new ErrorHandler(402, message); 
     } 
 
     static forbidden(message = 'Access Denied!') { 
         return new ErrorHandler(403, message); 
+    } 
+
+    static notFound(message = 'NOT Found!') { 
+        return new ErrorHandler(404, message); 
     } 
 
     static conflict(message = 'Conflict Occured!') { 

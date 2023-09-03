@@ -10,14 +10,13 @@ const authenticate = (req, res, next) => {
         next(); 
     } 
     catch (error) { 
-        next(ErrorHandler.unauthorized('Authentication failed')); 
+        next(ErrorHandler.unauthorized('You are not loggedin..')); 
     } 
 } 
 
 
 const accessTo = (permissionList) => { 
     return function middleware(req, res, next) { 
-        console.log(req.user);
         if(!permissionList.includes(req.user.role)) { 
             next(ErrorHandler.forbidden()); 
         } 

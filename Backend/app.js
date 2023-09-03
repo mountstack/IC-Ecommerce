@@ -23,7 +23,7 @@ app.use('/api/review', reviewRoute);
 
 // Page not found 
 app.use((req, res, next) => {
-    next(ErrorHandler.pageNotFound()); 
+    next(ErrorHandler.notFound()); 
 }) 
 
 // Express Error Handling Middleware
