@@ -115,9 +115,21 @@ async function cancelAdmin(req, res, next) {
     } 
 } 
 
+async function adminList(req, res, next) { 
+    try {
+        const admins = await User.find({role: 'admin'}).select('email createdAt'); 
+        res.json({
+            admins
+        })
+    } catch (err) {
+        next(ErrorHandler.serverError()); 
+    }
+}
+
 module.exports = { 
     registration, 
     login, 
     makeAdmin, 
-    cancelAdmin
+    cancelAdmin, 
+    adminList
 } 
