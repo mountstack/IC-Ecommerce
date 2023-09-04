@@ -107,7 +107,7 @@ async function cancelAdmin(req, res, next) {
         await User.findByIdAndUpdate({_id: userId}, {$set: { role: 'user' }}); 
 
         res.json({ 
-            'message': `Adminship has been cancelled of ${user.email}` 
+            'message': `Adminship cancelled of ${user.email}` 
         }); 
     } 
     catch (error) { 
