@@ -1,14 +1,15 @@
 const express = require('express'); 
 const mongoose = require('mongoose'); 
+const cors = require('cors'); 
 
 const ErrorHandler = require('./utills/ErrorHandler'); 
 const authRoute = require('./Routes/authRouter'); 
-const productRoute = require('./Routes/productRoute');
-const reviewRoute = require('./Routes/reviewRoute');
+const productRoute = require('./Routes/productRoute'); 
+const reviewRoute = require('./Routes/reviewRoute'); 
 
-const app = express();
-
-app.use(express.json());
+const app = express(); 
+app.use(cors()); 
+app.use(express.json()); 
 
 app.get('/', (req, res) => {
     res.json({
@@ -22,7 +23,7 @@ app.use('/api/review', reviewRoute);
 // app.use('/api/order', reviewRoute); 
 
 // Page not found 
-app.use((req, res, next) => {
+app.use((req, res, next) => { 
     next(ErrorHandler.notFound()); 
 }) 
 
