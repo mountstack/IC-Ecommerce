@@ -7,13 +7,13 @@ async function registration(req, res, next) {
     // 1. Receive & validate data 
     const { email, password} = req.body; 
     if(!email || !password) { 
-        next(ErrorHandler.validationError()); 
+        next(ErrorHandler.validationError('Email and passwords are required!')); 
     } 
 
     // 2. duplicate email check
     const data = await User.findOne({email}); 
     if(data) {
-        return next(ErrorHandler.conflict('Email already in use')); 
+        return next(ErrorHandler.conflict('Email already in use!')); 
     } 
 
     // 3. ENCRYPT Password 
@@ -76,7 +76,7 @@ async function makeAdmin(req, res, next) {
     } 
 
     if(user.role === 'admin') { 
-        return next(ErrorHandler.conflict('User is already an admin')); 
+        return next(ErrorHandler.conflict('User is already an admin. Please refresh the page.')); 
     } 
 
     try { 
@@ -91,9 +91,33 @@ async function makeAdmin(req, res, next) {
     } 
 } 
 
+async function cancelAdmin(req, res, next) {
+    const { userId } = req.body; 
+
+    const user = await User.findById(userId); 
+    if(!user) { 
+        return next(ErrorHandler.notFound('User not found')); 
+    } 
+
+    if(user.role === 'user') { 
+        return next(ErrorHandler.conflict('This user is not admin. Please refresh the page.')); 
+    } 
+
+    try { 
+        await User.findByIdAndUpdate({_id: userId}, {$set: { role: 'user' }}); 
+
+        res.json({ 
+            'message': `Adminship has been cancelled of ${user.email}` 
+        }); 
+    } 
+    catch (error) { 
+        next(ErrorHandler.serverError()); 
+    } 
+} 
 
 module.exports = {
     registration, 
     login, 
-    makeAdmin
+    makeAdmin, 
+    cancelAdmin
 } 
