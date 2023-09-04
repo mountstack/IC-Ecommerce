@@ -76,14 +76,14 @@ async function makeAdmin(req, res, next) {
     } 
 
     if(user.role === 'admin') { 
-        return next(ErrorHandler.conflict('User is already an admin. Please refresh the page.')); 
+        return next(ErrorHandler.conflict(`${user.email} already an admin. Please refresh the page.`)); 
     } 
 
     try { 
         await User.findByIdAndUpdate({_id: userId}, {$set: { role: 'admin' }}); 
 
         res.json({ 
-            'message': 'User successfully promoted to admin' 
+            'message': `${user.email} successfully promoted to admin` 
         }); 
     } 
     catch (error) { 
@@ -100,7 +100,7 @@ async function cancelAdmin(req, res, next) {
     } 
 
     if(user.role === 'user') { 
-        return next(ErrorHandler.conflict('This user is not admin. Please refresh the page.')); 
+        return next(ErrorHandler.conflict(`${user.email} is not admin. Please refresh the page.`)); 
     } 
 
     try { 
@@ -115,7 +115,7 @@ async function cancelAdmin(req, res, next) {
     } 
 } 
 
-module.exports = {
+module.exports = { 
     registration, 
     login, 
     makeAdmin, 
