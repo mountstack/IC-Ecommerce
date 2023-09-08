@@ -121,7 +121,18 @@ async function adminList(req, res, next) {
         res.json({ 
             admins
         }) 
-    } catch (err) { 
+    } 
+    catch (err) { 
+        next(ErrorHandler.serverError()); 
+    } 
+} 
+
+async function allUserList(req, res, next) { 
+    try { 
+        const users = await User.find({role: 'user'}); 
+        res.json({ users }); 
+    } 
+    catch (err) { 
         next(ErrorHandler.serverError()); 
     } 
 } 
@@ -131,5 +142,6 @@ module.exports = {
     login, 
     makeAdmin, 
     cancelAdmin, 
-    adminList
+    adminList, 
+    allUserList 
 } 
