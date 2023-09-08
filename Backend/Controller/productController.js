@@ -1,4 +1,3 @@
-
 const Product = require('../Model/Product'); 
 const ErrorHandler = require('../utills/ErrorHandler'); 
 
@@ -43,10 +42,26 @@ async function findSingle(req, res, next) {
     } 
 } 
 
+async function update(req, res, next) { 
+    const { id } = req.params; 
+
+    try { 
+        const product = await Product.findByIdAndUpdate(id, { $set: req.body }, {new: true});
+        res.json({ 
+            product, 
+            message: 'Updated Successfully'
+        }); 
+    } 
+    catch (err) { 
+        next(ErrorHandler.serverError()); 
+    } 
+} 
+
 
 
 module.exports = {
     create, 
     findAll, 
-    findSingle
+    findSingle, 
+    update
 }

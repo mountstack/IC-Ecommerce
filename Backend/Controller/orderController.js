@@ -71,10 +71,34 @@ async function statusHandler(req, res, next) {
     } 
 } 
 
+async function orderList(req, res, next) { 
+    try { 
+        const orders = await Order.find({isPaid: true}); 
+        res.json({ orders }); 
+    } 
+    catch (err) { 
+        next(ErrorHandler.serverError()); 
+    } 
+} 
+
+async function individualCustomerOrder(req, res, next) { 
+    const { userId } = req.params; 
+    console.log({userId});
+    try { 
+        const orders = await Order.find({user: userId, isPaid: true}); 
+        res.json({ orders }); 
+    } 
+    catch (err) { 
+        next(ErrorHandler.serverError()); 
+    } 
+} 
+
 
 module.exports = { 
     createOrder, 
     getSingleOrder, 
     isPaidHandler, 
-    statusHandler
+    statusHandler, 
+    orderList, 
+    individualCustomerOrder 
 } 
