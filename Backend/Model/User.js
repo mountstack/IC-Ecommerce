@@ -3,10 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose; 
 
 const UserSchema = new Schema({
-    name: {
-        type: String,
-        trim: true
-    },
+    name: { type: String, trim: true },
     email: {
         type: String,
         required: [true, 'Email is required'],
@@ -23,11 +20,11 @@ const UserSchema = new Schema({
         enum: ["user", "admin", "super-admin"],
         default: "user",
     },
-    orders: [
-        { type: mongoose.Types.ObjectId, ref: 'Orders' }
+    orders: [ 
+        { type: mongoose.Types.ObjectId, ref: 'Order' } 
     ] 
-}, {
-    timestamps: true
+}, { 
+    timestamps: true 
 }); 
 
 // RUN Only on login

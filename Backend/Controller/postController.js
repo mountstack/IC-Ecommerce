@@ -1,7 +1,6 @@
 const Post = require('../Model/Post'); 
 
-async function create(req, res) {
-    console.log('Post create');
+async function create(req, res) { 
     req.body.userInfo = req.user._id; 
     
     const {userInfo, title, content} = req.body; 
