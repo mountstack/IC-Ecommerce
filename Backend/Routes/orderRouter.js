@@ -1,11 +1,11 @@
 const express = require('express'); 
 const { authenticate, accessTo } = require('../middleware/authentication'); 
-const { getSingleOrder } = require('../Controller/orderController'); 
+const { getSingleOrder, isPaidHandler, statusHandler } = require('../Controller/orderController'); 
 
 const route = express.Router(); 
 
-route.get('/:id', getSingleOrder); 
-// route.patch('/:id', authenticate, accessTo(['super-admin']), () => {}); 
-// route.delete('/:id', authenticate, accessTo(['super-admin']), () => {}); 
+route.get('/:id', authenticate, getSingleOrder); 
+route.patch('/paid/:id', authenticate, isPaidHandler); 
+route.patch('/status/:id', authenticate, accessTo(['admin', 'super-admin']), statusHandler); 
 
 module.exports = route; 

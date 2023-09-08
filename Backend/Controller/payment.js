@@ -52,10 +52,10 @@ function payNow(req, res, next) {
                     price: price, 
                     address: address 
                 }; 
-                await orderController.createOrder(dataObj, next); 
+                const orderId = await orderController.createOrder(dataObj, next); 
 
-                
-                res.status(200).json({ url: GatewayPageURL }); 
+
+                res.status(200).json({ url: GatewayPageURL, orderId }); 
             }); 
     } 
     catch (error) { 

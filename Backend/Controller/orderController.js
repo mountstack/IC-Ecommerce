@@ -21,6 +21,8 @@ async function createOrder(data, next) {
         const userData = await User.findById(user); 
         userData.orders.push(newOrder._id); 
         await User.findByIdAndUpdate(user, { $set: { orders:  userData.orders} }) 
+
+        return order._id; 
     } 
     catch(err) { 
         next(ErrorHandler.serverError('An error occured! Order is not placed! Try agin!')); 
@@ -41,7 +43,38 @@ async function getSingleOrder(req, res, next) {
     } 
 } 
 
+async function isPaidHandler(req, res, next) {
+    try { 
+        const { id } = req.params; 
+        await Order.findByIdAndUpdate(id, { $set: { isPaid: true } }); 
+        res.json({
+            message: 'Order Created Successfully!'
+        })
+    } 
+    catch (error) { 
+        next(ErrorHandler.serverError()); 
+    } 
+} 
+
+async function statusHandler(req, res, next) { 
+    // status: ['pending', 'picked', 'delivered'], 
+    const { status } = req.body; 
+    try { 
+        const { id } = req.params; 
+        await Order.findByIdAndUpdate(id, { $set: { status } }); 
+        res.json({
+            message: 'Status Updated Successfully!'
+        })
+    } 
+    catch (error) { 
+        next(ErrorHandler.serverError()); 
+    } 
+} 
+
+
 module.exports = { 
     createOrder, 
-    getSingleOrder
+    getSingleOrder, 
+    isPaidHandler, 
+    statusHandler
 } 
